@@ -1,0 +1,26 @@
+# MVP Requirements - Minimal dependencies for testing
+
+# Core Pipecat (essential only)
+pipecat-ai>=0.0.50
+
+# Vector database (optional but useful)
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Basic document processing
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# Configuration
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+pydantic-settings>=2.1.0
+
+# Async utilities
+aiofiles>=23.2.0
+
+# Template engine
+jinja2>=3.1.0
+
+# Development (minimal)
+pytest>=7.4.0
