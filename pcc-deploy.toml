@@ -1,0 +1,7 @@
+agent_name = "agent-builder"
+image = "your_username/pipecat-agent-builder:0.1"
+secret_set = "agent-builder-secrets"
+
+[scaling]
+	min_agents = 1
+	max_agents = 5

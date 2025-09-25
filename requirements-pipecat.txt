@@ -1,0 +1,24 @@
+# Pipecat Agent Builder - Pipecat Cloud Requirements
+# Core Pipecat with required services
+pipecat-ai[daily,deepgram,openai,cartesia]>=0.0.50
+
+# Environment and logging
+python-dotenv>=1.0.0
+loguru>=0.7.0
+
+# Agent generation capabilities
+jinja2>=3.1.0
+pyyaml>=6.0
+
+# Knowledge base and document processing (for agent generation)
+sentence-transformers>=2.2.0
+chromadb>=0.4.0
+langchain>=0.0.350
+langchain-community>=0.0.10
+
+# Document processing for knowledge integration
+pypdf>=3.17.0
+python-docx>=0.8.11
+markdown>=3.5.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
