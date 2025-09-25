@@ -11,12 +11,13 @@ import tempfile
 from pathlib import Path
 from typing import Dict, Any
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, WebSocket
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
+import logging
 
 # Import our MVP components
 from mvp_main import SimplePipecatAgentBuilder
@@ -90,8 +91,87 @@ async def health_check():
         "timestamp": asyncio.get_event_loop().time()
     }
 
-# Main web interface
+# Serve React client
+app.mount("/static", StaticFiles(directory="client/dist", html=True), name="static")
+
 @app.get("/", response_class=HTMLResponse)
+async def serve_client():
+    """Serve the React client."""
+    client_dist = Path("client/dist/index.html")
+    
+    if client_dist.exists():
+        # Serve built React app
+        with open(client_dist, 'r') as f:
+            return f.read()
+    else:
+        # Development fallback
+        return """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pipecat Agent Builder</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        // Redirect to client dev server in development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            window.location.href = 'http://localhost:5173';
+        } else {
+            document.body.innerHTML = '<h1>Pipecat Agent Builder</h1><p>Building React client...</p>';
+        }
+    </script>
+</body>
+</html>
+        """
+
+# Pipecat WebSocket connection endpoint
+@app.websocket("/api/connect")
+async def websocket_endpoint(websocket: WebSocket):
+    """WebSocket endpoint for Pipecat client connection."""
+    await websocket.accept()
+    
+    try:
+        # This is where we'd integrate with the actual Pipecat conversation interface
+        # For now, we'll simulate a conversation about building agents
+        
+        await websocket.send_text(json.dumps({
+            "type": "bot_message",
+            "content": "Hello! I'm your Pipecat Agent Builder assistant. Tell me what kind of voice AI agent you'd like to build today."
+        }))
+        
+        while True:
+            # Listen for user messages
+            data = await websocket.receive_text()
+            message = json.loads(data)
+            
+            if message.get("type") == "user_message":
+                user_text = message.get("content", "")
+                
+                # Simple response logic (in production, this would use the full Pipecat conversation system)
+                if "customer service" in user_text.lower():
+                    response = "Great! A customer service agent is perfect for handling support inquiries. What channels do you want it to support - phone, web chat, or both?"
+                elif "sales" in user_text.lower():
+                    response = "Excellent choice! A sales assistant can help qualify leads and book meetings. Should it handle inbound calls, outbound prospecting, or both?"
+                elif "restaurant" in user_text.lower():
+                    response = "A restaurant agent is very useful! It can take reservations, answer menu questions, and handle takeout orders. What's your restaurant's specialty?"
+                else:
+                    response = f"Interesting! You mentioned: '{user_text}'. Can you tell me more about what specific tasks this agent should handle?"
+                
+                await websocket.send_text(json.dumps({
+                    "type": "bot_message", 
+                    "content": response
+                }))
+                
+    except Exception as e:
+        logging.error(f"WebSocket error: {e}")
+    finally:
+        await websocket.close()
+
+# Legacy web interface (fallback)
+@app.get("/form", response_class=HTMLResponse)
 async def get_web_interface():
     """Serve the main web interface."""
     return """
