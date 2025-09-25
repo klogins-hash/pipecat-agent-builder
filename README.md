@@ -1,14 +1,25 @@
-# Pipecat Agent Builder
+# 🤖 Pipecat Agent Builder
 
-An LLM-powered conversational interface for building and deploying Pipecat AI agents through natural language interaction.
+Build sophisticated voice AI agents through **natural conversation** - now with a real Pipecat voice interface!
 
-## Features
+## 🎤 **NEW: Voice Interface**
 
-- 🗣️ **Conversational Interface**: Use Pipecat's own voice SDK to describe your agent requirements
-- 🤖 **Windsurf Cascade Integration**: Leverage MCP for expert code generation and validation
-- 📚 **Vectorized Knowledge Base**: Access the entire Pipecat documentation for optimal patterns
-- 🚀 **Automated Deployment**: Deploy directly to Pipecat Cloud with zero configuration
-- 🔧 **Knowledge Integration**: Scrape and integrate external knowledge sources
+Talk directly to build your agents! Just like the Pipecat quickstart examples, you can now:
+- **Click the microphone** and describe your agent naturally
+- **Real-time conversation** with voice visualization  
+- **WebSocket connection** for instant responses
+- **Fallback to forms** if voice isn't available
+
+## ✨ **Key Features**
+
+- 🎤 **Voice Interface** - Talk naturally to build agents (NEW!)
+- 🎯 **Natural Language Input** - Describe your agent in plain English
+- 🔧 **Complete Code Generation** - Get full Pipecat applications, not just snippets  
+- 📞 **Multi-Channel Support** - Phone, web, mobile integrations
+- 🌍 **Multi-Language** - Support for multiple languages
+- ☁️ **Ready to Deploy** - Includes Railway/cloud deployment configs
+- 📚 **Knowledge Integration** - Upload documents for agent training
+- 🎨 **Customizable Personalities** - Define agent behavior and tone
 
 ## Architecture
 
@@ -21,32 +32,45 @@ graph TD
     E --> F[Vectorized Knowledge Base]
 ```
 
-## Quick Start
+## 🏃‍♂️ **Quick Start**
 
-1. **Install Dependencies**
+### **Option 1: Use Deployed Version**
+Visit the live app: [Your Railway URL]
+- Click the microphone and start talking!
+- Or use the form builder as backup
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+### **Option 2: Run Locally**
 
-2. **Set up Environment**
+**Backend (Python):**
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd pipecat-agent-builder
 
-   ```bash
-   cp .env.example .env
-   # Add your API keys
-   ```
+# Install Python dependencies  
+pip install -r requirements-railway.txt
 
-3. **Initialize Knowledge Base**
+# Set up environment variables
+cp .env.example .env
+# Add your API keys to .env
 
-   ```bash
-   python scripts/vectorize_docs.py
-   ```
+# Start the server
+python web_app.py
+```
 
-4. **Start the Builder**
+**Frontend (React + Pipecat):**
+```bash
+# In a new terminal
+cd client
 
-   ```bash
-   python main.py
-   ```
+# Install Node.js dependencies
+npm install
+
+# Start the React dev server  
+npm run dev
+```
+
+Visit http://localhost:5173 for the full voice interface!
 
 ## Components
 
@@ -57,19 +81,43 @@ graph TD
 - `interface/` - Conversational interface components
 - `mcp/` - Windsurf Cascade MCP integration
 
-## Usage
+## 🔑 **Required API Keys**
 
-Simply start a conversation with the agent builder:
+Add these to your `.env` file or Railway environment variables:
 
-> "I want to create a customer service bot that can handle phone calls in Spanish and English, access our FAQ database, and integrate with Zendesk."
+```bash
+OPENAI_API_KEY=sk-proj-your-openai-key
+DEEPGRAM_API_KEY=your-deepgram-key  
+CARTESIA_API_KEY=your-cartesia-key
+```
 
-The system will:
+## 🎯 **How It Works**
 
-1. Gather detailed requirements through conversation
-2. Generate optimized Pipecat code using Windsurf Cascade
-3. Set up knowledge base integration
-4. Deploy to Pipecat Cloud
-5. Provide management dashboard and monitoring
+### **Voice Mode (Recommended)**
+
+1. **Click the microphone** - Start a voice conversation
+2. **Describe your agent** - "I need a sales bot for my SaaS company"
+3. **Natural follow-up** - AI asks about channels, features, personality
+4. **Code generation** - Creates complete Pipecat application
+5. **Download & deploy** - Get ZIP with all files ready for production
+
+### **Form Mode (Fallback)**
+
+1. **Fill out the form** - Structured input for agent requirements
+2. **Submit details** - Specify channels, languages, use case
+3. **Generate agent** - AI creates the complete application
+4. **Download files** - Get your production-ready agent
+
+## 📚 **Example Voice Prompts**
+
+### Customer Service Bot
+*"Create a customer service agent for my e-commerce store that can track orders, handle returns, answer product questions, and escalate to humans when needed. I need it to support both English and Spanish."*
+
+### Restaurant Assistant  
+*"Build a phone agent for my Italian restaurant that takes reservations, answers menu questions, handles takeout orders, and provides directions. It should have a warm, friendly personality."*
+
+### Sales Assistant
+*"I need a sales bot for my SaaS company that can qualify leads, schedule demos, answer pricing questions, and integrate with our CRM. It should sound professional but approachable."*
 
 ## License
 
